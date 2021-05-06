@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-offset-2">
+    <a (click)="initBookings()">
+      <h3>Bookings</h3>
+    </a>
+  </div>
+  <div class="col">
+    <span (click)="initBookings()" class="btn btn-outline-secondary">
+      <i class="icon ion-md-refresh"></i>
+    </span>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <img *ngIf="loading" src="/assets/images/loading.gif" width="100" height="100" alt="">
+  <table *ngIf="!loading" class="table table-striped table-sm">
+    <thead>
+    <tr>
+      <th *ngFor="let i of fields">
+        <div [ngClass]="i.id==4?'col':'col'">
+            <span style="display: block" id="btn_{{i.id}}" class="btn btn-outline-info"
+                  (click)="showFilter(i)">{{i.name}}
+              </span>
+        </div>
+        <div [ngClass]="i.id==5?'col-md-5': 'col'">
+          <div class="input-group">
+            <input type="text" style="display: none" class="form-control" #box id="filter_{{i.id}}"
+                   (keyup.enter)="inputFilter(i,box.value)"
+                   placeholder="{{i.name}}">
+
+            <div class="input-group-prepend">
+              <select id="select_5" class="input-group-text" style="display: none" name="select"
+                      (change)="calcMajorOrMinor($event)">
+                <option>Seleccione</option>
+                <option value="1"> >=</option>
+                <option value="2"> <=</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+      </th>
+    </tr>
+    </thead>
+
+    <tbody *ngIf="data.length>0">
+    <tr *ngFor="let i of data">
+      <td>{{i.bookingId}}</td>
+      <td>{{i.tutenUserClient.firstName + ' ' + i.tutenUserClient.lastName}}</td>
+      <td>{{i.bookingTime | date:'dd-MM-yyyy'}}</td>
+      <td style="width: 19%">{{i.locationId.streetAddress}}</td>
+      <td>{{i.bookingPrice | currency:'USD':true:'2.2-4'}}</td>
+    </tr>
+    </tbody>
+    <tbody *ngIf="data.length<=0">
+    No hay datos disponibles
+    </tbody>
+  </table>
+</div>
